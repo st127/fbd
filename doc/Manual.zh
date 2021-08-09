@@ -1,0 +1,82 @@
+
+                Fbd手册
+
+================================================================================
+
+        Introduction
+        fbd即 "FrameBuffer Driver" 的缩写.fbd是一个屏蔽了平台差异的用户态Linux F
+ramebuffer驱动程序库.提供了对Framebuffer设备的直接访问和基本图形API.
+
+================================================================================
+
+
+        Install
+        fbd的编译依赖POSIX Make,并且必须运行在支持Framebuffer的Linux内核上.
+        确认您的Linux支持Framebuffer,安装好Make后,请在/src目录下运行
+make && make install        请视情况调整命令权限.例如,Debian系Linux的用户可能需
+要使用
+make && sudo make install         详细的安装目录配置,请见/src/Makefile.
+
+================================================================================
+
+
+        Compile and Link
+        首先,您需要确保fbd库的文件路径位于您编译器的搜索路径中.若不是,请调整编译
+器选项或更改fbd的安装目录.
+        使用fbd库的应用程序需要包含头文件fbd/fbd.h
+        链接过程中,需要指明链接fbd库.通常需要指定-lfbd选项.
+        如编译测试程序的命令:
+c99 Fbd.test.c -lfbd
+
+================================================================================
+
+
+        API
+
+  数据结构
+Fbd_Device              Framebuffer设备
+
+  函数
+Fbd_Device *fbd_open(const char *path);
+        打开Framebuffer设备.
+        Input:
+                path    设备路径
+        Return:
+                NULL    失败
+
+        void fbd_close(Fbd_Device *fbd);
+        关闭Framebuffer设备.
+        Input:
+                fbd     Framebuffer设备
+        
+        void fbd_clear(Fbd_Device *fbd);
+        清屏
+                fbd     Framebuffer设备
+        
+        void fbd_point(Fbd_Device *fbd,uint32_t x,uint32_t y,
+                       uint8_t a,uint8_t r,uint8_t g,uint8_t b);
+        画点
+        Input:
+                fbd     Framebuffer设备
+                x,y     坐标
+                a,r,g,b 点的颜色信息
+        
+        void fbd_line(Fbd_Device *fbd,uint32_t sx,uint32_t sy,
+                      uint32_t ex,uint32_t ey,
+                      uint8_t a,uint8_t r,uint8_t g,uint8_t b);
+        画线
+        Input:
+                fbd     Framebuffer设备
+                sx,sy   起点坐标
+                ex,ey   终点坐标
+                a,r,g,b 线段颜色
+
+        void fbd_box(Fbd_Device *fbd,uint32_t x1,uint32_t y1,
+                     uint32_t x2,uint32_t y2,
+                     uint8_t a,uint8_t r,uint8_t g,uint8_t b);
+        画方框
+        Input:
+                fbd     Framebuffer设备
+                x1,y1   左上顶点坐标
+                x2,y2   右下顶点坐标
+                a,r,g,b 方框颜色

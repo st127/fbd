@@ -1,0 +1,79 @@
+\t1 Fbd手册\et1
+\line
+\t2 Introduction\et2
+\p fbd即 "FrameBuffer Driver" 的缩写.fbd是一个屏蔽了平台差异的用户态Linux Framebuffer驱动程序库.提供了对Framebuffer设备的直接访问和基本图形API.\ep
+\line
+\nl
+
+\t2 Install\et2
+\p fbd的编译依赖POSIX Make,并且必须运行在支持Framebuffer的Linux内核上.\ep
+\p 确认您的Linux支持Framebuffer,安装好Make后,请在/src目录下运行\ep
+\code make && make install\ecode
+\p 请视情况调整命令权限.例如,Debian系Linux的用户可能需要使用\ep
+\code make && sudo make install \ecode
+\p 详细的安装目录配置,请见/src/Makefile.\ep
+\line
+\nl
+
+\t2 Compile and Link\et2
+\p 首先,您需要确保fbd库的文件路径位于您编译器的搜索路径中.若不是,请调整编译器选项或更改fbd的安装目录.\ep
+\p 使用fbd库的应用程序需要包含头文件\code fbd/fbd.h\ecode \ep
+\p 链接过程中,需要指明链接fbd库.通常需要指定\code -lfbd\ecode 选项.\ep
+\p 如编译测试程序的命令:\ep
+\code
+c99 Fbd.test.c -lfbd
+\ecode
+\line
+\nl
+
+\t2 API\et2
+\t3 数据结构\et3
+\code
+	Fbd_Device\tab \tab Framebuffer设备
+\ecode
+\t3 函数\et3
+\code
+	Fbd_Device *fbd_open(const char *path);
+	打开Framebuffer设备.
+	Input:
+		path	设备路径
+	Return:
+		NULL	失败
+
+	void fbd_close(Fbd_Device *fbd);
+	关闭Framebuffer设备.
+	Input:
+		fbd	Framebuffer设备
+	
+	void fbd_clear(Fbd_Device *fbd);
+	清屏
+		fbd	Framebuffer设备
+	
+	void fbd_point(Fbd_Device *fbd,uint32_t x,uint32_t y,
+		       uint8_t a,uint8_t r,uint8_t g,uint8_t b);
+	画点
+	Input:
+		fbd	Framebuffer设备
+		x,y	坐标
+		a,r,g,b	点的颜色信息
+	
+	void fbd_line(Fbd_Device *fbd,uint32_t sx,uint32_t sy,
+		      uint32_t ex,uint32_t ey,
+		      uint8_t a,uint8_t r,uint8_t g,uint8_t b);
+	画线
+	Input:
+		fbd	Framebuffer设备
+		sx,sy	起点坐标
+		ex,ey	终点坐标
+		a,r,g,b	线段颜色
+
+	void fbd_box(Fbd_Device *fbd,uint32_t x1,uint32_t y1,
+		     uint32_t x2,uint32_t y2,
+		     uint8_t a,uint8_t r,uint8_t g,uint8_t b);
+	画方框
+	Input:
+		fbd	Framebuffer设备
+		x1,y1	左上顶点坐标
+		x2,y2	右下顶点坐标
+		a,r,g,b	方框颜色
+\ecode
