@@ -1,11 +1,12 @@
 /*
 	fbd
 	File:/test/Fbd.test.c
-	Date:2021.07.28
+	Date:2021.08.09
 	By MIT License.
 	Copyright (c) 2021 Suote127.All rights reserved.
 */
 
+#include<assert.h>
 #include<stdio.h>
 #include<stdlib.h>
 
@@ -14,8 +15,9 @@
 int main(void)
 {
 	Fbd_Device *fbdev = fbd_open("/dev/fb0");
+	assert(fbdev);
 
-	for (int y = 1;y <= 768;y++) {
+	for (int y = 1;y <= 600;y++) {
 		fbd_point(fbdev,2,y,0,255,0,0);
 	}
 	getchar();
@@ -26,6 +28,9 @@ int main(void)
 
 	fbd_clear(fbdev);
 	fbd_box(fbdev,100,100,400,400,0,0,0,255);
+	getchar();
+
+	fbd_clear(fbdev);
 
 	fbd_close(fbdev);
 
