@@ -72,6 +72,7 @@ err:
 
 void fbd_close(Fbd_Device *dev)
 {
+	fbd_clear(dev);
 	close(dev->fd);
 	free(dev);
 	int ttyFd = open("/dev/tty",O_WRONLY);
