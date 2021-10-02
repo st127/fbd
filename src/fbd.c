@@ -1,7 +1,7 @@
 /*
 	fbd
 	File:/src/fbd.c
-	Date:2021.07.28
+	Date:2021.10.02
 	By MIT License.
 	Copyright (c) 2021 Suote127.All rights reserved.
 */
@@ -52,6 +52,13 @@ Fbd_Device *fbd_open(char const *path)
 					 MAP_SHARED,dev->fd,0);
 	if (!dev->map)
 		goto err;
+	/*	Disable auto blanking	*/
+	int ttyFd = open("/dev/tty",O_WRONLY);
+	if (ttyFd < 0)
+		goto err;
+	write(ttyFd,"\033[9;0]",6);
+	close(ttyFd);
+	puts("\033[?25l");
 	
 	fbd_clear(dev);
 
@@ -67,6 +74,13 @@ void fbd_close(Fbd_Device *dev)
 {
 	close(dev->fd);
 	free(dev);
+	int ttyFd = open("/dev/tty",O_WRONLY);
+	if (ttyFd < 0)
+		return;
+	write(ttyFd,"\033[9;10]",7);
+	close(ttyFd);
+	puts("\033[?25h");
+	return;
 }
 
 void fbd_clear(Fbd_Device *dev)
