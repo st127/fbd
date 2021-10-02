@@ -103,8 +103,8 @@ void fbd_point(Fbd_Device *dev,uint32_t x,uint32_t y,
 {
 	uint32_t color = color_convert(dev,a,r,g,b);
 
-	x += dev->vinfo.xoffset - 1;
-	y += dev->vinfo.yoffset - 1;
+	x += dev->vinfo.xoffset;
+	y += dev->vinfo.yoffset;
 
 	if (dev->bpp == 32) {
 		uint32_t location		  = x + ((y * dev->lineLength) >> 2);

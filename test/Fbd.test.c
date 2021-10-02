@@ -1,7 +1,7 @@
 /*
 	fbd
 	File:/test/Fbd.test.c
-	Date:2021.08.09
+	Date:2021.10.02
 	By MIT License.
 	Copyright (c) 2021 Suote127.All rights reserved.
 */
@@ -23,7 +23,7 @@ int main(void)
 	getchar();
 
 	fbd_clear(fbdev);
-	fbd_line(fbdev,1,1,fbd_width(fbdev),fbd_height(fbdev),0,0,255,0);
+	fbd_line(fbdev,0,0,fbd_width(fbdev) - 1,fbd_height(fbdev) - 1,0,0,255,0);
 	getchar();
 
 	fbd_clear(fbdev);
